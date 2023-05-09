@@ -8,7 +8,6 @@ const upload = require('../middleware/uploadImages');
 const Product = require ('../models/Product');
 let productModel = new Product();
 
-// authorize [CREATE, UPDATE, DELETE, LIST]
 router.post("/", 
         authorize,
         upload.single('image'),
