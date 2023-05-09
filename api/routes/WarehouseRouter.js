@@ -24,6 +24,7 @@ router.post("/",
         let warehouseInfo = {
             name: req.body.name,
             location: req.body.location,
+            supervisorID: null
         }
         let warehouse = await warehouseModel.AddWarehouse(warehouseInfo);
 

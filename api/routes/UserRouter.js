@@ -31,7 +31,7 @@ router.post("/",
             email: req.body.email,
             phone: req.body.phone,
             password:req.body.password,
-            warehouseID: req.body.warehouseID? req.body.warehouseID: null
+            warehouseID: null
         };
         userInfo =  await userModel.AddUser(userInfo);
 
