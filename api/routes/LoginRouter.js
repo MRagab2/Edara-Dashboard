@@ -4,7 +4,7 @@ const util = require ("util");
 const bcrypt =require("bcrypt");
 const conn = require ("../db/dbConnection");
 
-const User = require ('../models/user');
+const User = require ('../models/User');
 
 router.post("/",    
     body("email")

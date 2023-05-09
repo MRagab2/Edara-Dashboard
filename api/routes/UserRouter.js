@@ -3,7 +3,7 @@ const {body, validationResult} = require('express-validator');
 
 const authenticate = require("../middleware/authentication");
 const authorize = require("../middleware/authorization");
-const User = require ('../models/user');
+const User = require ('../models/User');
 let userModel = new User();
 
 // authorize [CREATE, UPDATE, DELETE, LIST]

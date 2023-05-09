@@ -4,10 +4,11 @@ const util = require ("util");
 const authorization =async (req, res, next) =>{
 try{
     const query = util.promisify(conn.query).bind(conn);
-    const {token} = req.headers; 
-    if(token){
-        const admin =await  query("select * from users where token = ? ", [token]);
-        if(admin[0]&& admin[0].role == "admin"){
+    const tokenCheck = req.headers.token; 
+    
+    if(tokenCheck){
+        const isAdmin = await  query("select * from users where token = ? ", [tokenCheck]);
+        if(isAdmin[0] && isAdmin[0].role == "admin"){
             next();
         } else{
             res.status(403).json({

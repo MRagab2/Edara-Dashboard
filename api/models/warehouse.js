@@ -5,8 +5,6 @@ const query = util.promisify(conn.query).bind(conn);
 
 module.exports = class Warehouse{
 
-    constructor(){};
-
     async AddWarehouse(warehouseInfo){
 
         const warehouseCheck = await query('SELECT * FROM warehouses WHERE name = ?', warehouseInfo.name);

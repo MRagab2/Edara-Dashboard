@@ -5,25 +5,23 @@ const query = util.promisify(conn.query).bind(conn);
 
 module.exports = class Request{
 
-    constructor(){};
-
     async AddRequest(requestInfo){
 
-        const checkProduct = await query('SELECT * FROM products WHERE id = ?', requestInfo.productID);
-        if(!checkProduct[0]){
+        const productCheck = await query('SELECT * FROM products WHERE id = ?', requestInfo.productID);
+        if(!productCheck[0]){
             return {
                 err: "Product Doesn't Exist.."
             };
         } 
         
-        const checkUser = await query('SELECT * FROM users WHERE id = ?', requestInfo.userID);
-        if(!checkUser[0]){
+        const userCheck = await query('SELECT * FROM users WHERE id = ?', requestInfo.userID);
+        if(!userCheck[0]){
             return {
                 err: "User Doesn't Exist.."
             };
         }
-        const checkWarehouse = await query('SELECT * FROM warehouses WHERE id = ?', requestInfo.warehouseID);
-        if(!checkWarehouse[0]){
+        const warehouseCheck = await query('SELECT * FROM warehouses WHERE id = ?', requestInfo.warehouseID);
+        if(!warehouseCheck[0]){
             return {
                 err: "Warehouse Doesn't Exist.."
             };

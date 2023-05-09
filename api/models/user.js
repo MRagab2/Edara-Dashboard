@@ -7,36 +7,39 @@ const query = util.promisify(conn.query).bind(conn);
 
 module.exports = class User{
 
-    constructor(){};
-
     async Login(email, password){
-        /* check Existance*/
-        const user = await query ("SELECT * FROM users WHERE email = ? ",email);
-        if(user.length == 0) 
-            return {errors: [{msg: "not correct email or password !"}]};
 
-        /* check Password*/
-        const checkpassword = await bcrypt.compare(password, user[0].password);
-        if(!checkpassword) 
-            return {errors: [{msg: "not correct email or password !"}]};
+        const user = await query ("SELECT * FROM users WHERE email = ? ",email);
+        if(!user[0]) 
+            return {
+                errors: [{
+                    msg: "not correct email or password !"
+                }]
+            };
+
+        const passwordCheck = await bcrypt.compare(password, user[0].password);
+        if(!passwordCheck) 
+            return {
+                errors: [{
+                    msg: "not correct email or password !"
+                }]
+            };
 
         delete user[0].password;
         return user[0];
     }
 
     async AddUser(userInfo){
-        /* check Existance*/
+
         let userChek = await query("SELECT * FROM users WHERE email = ?", userInfo.email);
-        if(userChek.length) 
+        if(userChek[0]) 
             return {
                 err : "User already exists"
             };
-        /* Prepare to Save*/
+
         userInfo.password = await bcrypt.hash(userInfo.password, 10);
         userInfo.token = crypto.randomBytes(10).toString('hex');
-        console.log(userInfo);
 
-        /* Insert*/
         await query('INSERT INTO users SET ? ',userInfo);
         
         delete userInfo.password;

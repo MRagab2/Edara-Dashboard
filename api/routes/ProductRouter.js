@@ -5,7 +5,7 @@ const authenticate = require("../middleware/authentication");
 const authorize = require("../middleware/authorization");
 const upload = require('../middleware/uploadImages');
 
-const Product = require ('../models/product');
+const Product = require ('../models/Product');
 let productModel = new Product();
 
 // authorize [CREATE, UPDATE, DELETE, LIST]
@@ -81,7 +81,7 @@ router.get("/warehouseProducts/:id",
         authenticate,
         async(req, res) => {
     try{
-        const products = await productModel.GetWarehouseProducts(req.params.warehouseID);
+        const products = await productModel.GetWarehouseProducts(req.params.id);
         if(products.err) 
             return res.status(404).json(products);
 

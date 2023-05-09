@@ -6,7 +6,7 @@ const authorize = require("../middleware/authorization");
 
 const conn = require ("../db/dbConnection");
 
-const Request = require ('../models/request');
+const Request = require ('../models/Request');
 let requestModel = new Request();
 
 router.post("/", 
