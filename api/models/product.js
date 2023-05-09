@@ -13,7 +13,7 @@ module.exports = class Product{
 
         if(!productInfo.file) {
             return {
-                msg: "Image Required"
+                err: "Image Required"
             };
         }
         
@@ -45,7 +45,7 @@ module.exports = class Product{
             if(newInfo.file)
                 fs.unlinkSync('./upload/' + newInfo.file.filename);
             return {
-                msg: "product not found"
+                err: "product not found"
             };
         }
 
@@ -55,7 +55,7 @@ module.exports = class Product{
                 if(newInfo.file)
                     fs.unlinkSync('./upload/' + newInfo.file.filename);
                 return {
-                    msg: "warehouse not found"
+                    err: "warehouse not found"
                 };
             }
                 
@@ -85,32 +85,52 @@ module.exports = class Product{
 
     async DeleteProduct(id){
         
-        const warehouse = await query('SELECT * FROM `warehouses` WHERE id =?', id);
-        if(!warehouse[0]) 
+        const product = await query('SELECT * FROM `products` WHERE id =?', id);
+        if(!product[0]) 
             return {
-                msg: "warehouse not found"
+                err: "product not found"
             };
-
-        await query('DELETE FROM `warehouses` WHERE `id` = ?', warehouse[0].id);
+        
+        fs.unlinkSync('./upload/' + product[0].image);
+        await query('DELETE FROM `products` WHERE `id` = ?', product[0].id);
+        
         return {
-            msg: "warehouse deleted"
+            msg: "product deleted"
         };
     }
 
     async GetProducts(){
         
-        let warehouses = await query("SELECT * FROM `warehouses`");
-        return warehouses;
+        let products = await query("SELECT * FROM `products`");
+        products.map(product =>{
+            product.image = `http://localhost:4000/${product.image}`
+        });
+        return products;
     }
 
     async GetProduct(id){
         
-        let warehouse = await query("SELECT * FROM `warehouses` WHERE id = ?", id);
-        if(!warehouse[0]) 
+        let product = await query("SELECT * FROM `products` WHERE id = ?", id);
+        if(!product[0]) 
             return {
-                err : "Warehouse doesn't exist.."
+                err : "product doesn't exist.."
             };
 
-        return warehouse[0];
+        return product[0];
     }
+
+    async GetWarehouseProducts(warehouseID){
+        const checkWarehouse = await query('SELECT * FROM warehouses WHERE id = ?',warehouseID); 
+        if(!checkWarehouse[0]) 
+            return {
+                err: "Warehouse not found"
+            };
+
+        const products = await query('SELECT * FROM `products` WHERE warehouseID = ?',warehouseID);
+        products.map(product =>{
+            product.image = `http://${req.hostname}:4000/${product.image}`
+        });
+
+        return products;
+    } 
 };
