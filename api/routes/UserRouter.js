@@ -7,6 +7,7 @@ const authorize = require("../middleware/authorization");
 const User = require ('../models/User');
 let userModel = new User();
 
+
 router.post("/",
         authorize,
         body("name")

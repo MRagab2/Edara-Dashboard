@@ -7,6 +7,7 @@ const authorize = require("../middleware/authorization");
 const Warehouse = require('../models/Warehouse'); 
 let warehouseModel = new Warehouse();
 
+
 router.post("/",
         authorize,
         body("name") 
