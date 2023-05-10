@@ -1,10 +1,7 @@
 const router = require('express').Router();
-const util = require ("util");
 
 const authenticate = require("../middleware/authentication");
 const authorize = require("../middleware/authorization");
-
-const conn = require ("../db/dbConnection");
 
 const Request = require ('../models/Request');
 let requestModel = new Request();

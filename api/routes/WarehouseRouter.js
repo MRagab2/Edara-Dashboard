@@ -4,10 +4,9 @@ const {body, validationResult} = require('express-validator');
 const authenticate = require("../middleware/authentication");
 const authorize = require("../middleware/authorization");
 
-const Warehouse = require ('../models/Warehouse');
+const Warehouse = require('../models/Warehouse'); 
 let warehouseModel = new Warehouse();
 
-// authorize [CREATE, UPDATE, DELETE, LIST]
 router.post("/",
         authorize,
         body("name") 
